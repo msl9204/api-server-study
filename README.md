@@ -1,4 +1,4 @@
-# api-server-study
+# TDD(Jest) Api Server
 mju 2020 adv. web api-server
 
 - Express + Mysql+ Sequelize API Server
