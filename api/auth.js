@@ -1,4 +1,8 @@
-function register(req, res, next) {
+const db = require("../models");
+const jwt = require("jsonwebtoken");
+const secret = require("../config/config.js").secret;
+
+async function register(req, res, next) {
     if (!req.body.email) {
         return res.status(400).json({ message: "email is missing" });
     }
@@ -7,7 +11,21 @@ function register(req, res, next) {
         return res.status(400).json({ message: "password is missing" });
     }
 
-    res.json({ token: "xxxxxxx" });
+    const user = await db.User.create({
+        email: req.body.email,
+        password: req.body.password,
+    });
+
+    res.json({
+        user,
+        token: jwt.sign(
+            {
+                email: user.email,
+            },
+            secret,
+            { expiresIn: "1h" }
+        ),
+    });
 }
 
 module.exports = {
